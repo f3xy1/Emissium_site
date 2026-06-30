@@ -20,10 +20,6 @@ function Hero() {
           </a>
         </div>
       </div>
-
-      {/* Decorative orb */}
-      <div className="hero__orb hero__orb--1"></div>
-      <div className="hero__orb hero__orb--2"></div>
     </section>
   )
 }

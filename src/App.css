@@ -1,5 +1,5 @@
 .app {
-  position: relative;
+  position: relative; /* орбы считают координаты от этого блока */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -9,5 +9,5 @@
   flex: 1;
   position: relative;
   z-index: 1;
-  padding-top: 80px;
+  padding-top: 70px;
 }

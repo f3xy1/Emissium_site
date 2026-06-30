@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Navbar from './components/Navbar'
 import MatrixBackground from './components/MatrixBackground'
+import BackgroundOrbs from './components/BackgroundOrbs'
 import Hero from './components/Hero'
 import Carousel from './components/Carousel'
 import Pricing from './components/Pricing'
@@ -9,23 +10,11 @@ import Footer from './components/Footer'
 import './App.css'
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('emissium-theme') || 'dark'
-  })
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('emissium-theme', theme)
-  }, [theme])
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
-  }
-
   return (
     <div className="app">
       <MatrixBackground />
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <BackgroundOrbs />
+      <Navbar />
       <main className="main-content">
         <Hero />
         <Carousel />

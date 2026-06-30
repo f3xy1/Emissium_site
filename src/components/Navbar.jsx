@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import ThemeToggle from './ThemeToggle'
 import './Navbar.css'
 
-function Navbar({ theme, toggleTheme }) {
+function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -45,7 +44,6 @@ function Navbar({ theme, toggleTheme }) {
           <a href="#" className="navbar__link navbar__link--cta" onClick={handleNavClick}>
             Вход
           </a>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
         </div>
       </div>
     </nav>
