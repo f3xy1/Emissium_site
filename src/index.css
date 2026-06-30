@@ -1,0 +1,100 @@
+/* ===== CSS VARIABLES / THEMES ===== */
+:root {
+  /* Dark theme (default) */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: rgba(18, 18, 30, 0.8);
+  --text-primary: #e0e0ff;
+  --text-secondary: #8888aa;
+  --neon-primary: #a855f7;
+  --neon-secondary: #c084fc;
+  --neon-glow: rgba(168, 85, 247, 0.6);
+  --neon-glow-strong: rgba(168, 85, 247, 0.9);
+  --neon-glow-subtle: rgba(168, 85, 247, 0.15);
+  --border-color: rgba(168, 85, 247, 0.3);
+  --navbar-bg: rgba(10, 10, 15, 0.85);
+  --table-header-bg: rgba(168, 85, 247, 0.15);
+  --table-row-hover: rgba(168, 85, 247, 0.08);
+  --toggle-bg: #2a2a3a;
+  --shadow-neon: 0 0 15px rgba(168, 85, 247, 0.3), 0 0 30px rgba(168, 85, 247, 0.1);
+  --matrix-color: rgba(168, 85, 247, 0.07);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f5f3ff;
+  --bg-secondary: #ede9fe;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b6b8d;
+  --neon-primary: #7c3aed;
+  --neon-secondary: #8b5cf6;
+  --neon-glow: rgba(124, 58, 237, 0.4);
+  --neon-glow-strong: rgba(124, 58, 237, 0.7);
+  --neon-glow-subtle: rgba(124, 58, 237, 0.1);
+  --border-color: rgba(124, 58, 237, 0.3);
+  --navbar-bg: rgba(245, 243, 255, 0.9);
+  --table-header-bg: rgba(124, 58, 237, 0.1);
+  --table-row-hover: rgba(124, 58, 237, 0.05);
+  --toggle-bg: #ddd6fe;
+  --shadow-neon: 0 0 15px rgba(124, 58, 237, 0.2), 0 0 30px rgba(124, 58, 237, 0.08);
+  --matrix-color: rgba(124, 58, 237, 0.05);
+}
+
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-secondary);
+}
+
+/* ===== GLOBAL NEON TEXT UTILITY ===== */
+.neon-text {
+  color: var(--neon-primary);
+  text-shadow:
+    0 0 7px var(--neon-glow),
+    0 0 20px var(--neon-glow),
+    0 0 40px var(--neon-glow-subtle);
+}

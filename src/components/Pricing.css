@@ -1,0 +1,75 @@
+.pricing {
+  padding: 80px 24px;
+}
+
+.pricing__container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pricing__title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.pricing__table-wrapper {
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  background: var(--bg-card);
+  backdrop-filter: blur(15px);
+  box-shadow: var(--shadow-neon);
+}
+
+.pricing__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pricing__table thead {
+  background: var(--table-header-bg);
+}
+
+.pricing__table th {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--neon-primary);
+  padding: 18px 24px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.pricing__table th:first-child {
+  text-align: left;
+}
+
+.pricing__table td {
+  padding: 16px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 400;
+  transition: background 0.2s ease;
+}
+
+.pricing__table td:first-child {
+  text-align: left;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.pricing__table tbody tr:hover td {
+  background: var(--table-row-hover);
+}
+
+@media (max-width: 600px) {
+  .pricing__table th,
+  .pricing__table td {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+}
