@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import './Navbar.css'
 
 function Navbar() {
@@ -6,16 +7,12 @@ function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNavClick = () => {
-    setMobileOpen(false)
-  }
+  const handleNavClick = () => setMobileOpen(false)
 
   return (
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
@@ -41,9 +38,9 @@ function Navbar() {
           <a href="#pricing" className="navbar__link" onClick={handleNavClick}>
             Цены
           </a>
-          <a href="#" className="navbar__link navbar__link--cta" onClick={handleNavClick}>
+          <Link to="/login" className="navbar__link navbar__link--cta" onClick={handleNavClick}>
             Вход
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

@@ -1,0 +1,304 @@
+/* ── Wrapper ─────────────────────────────────────────────── */
+.login-form__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 24px;
+}
+
+/* ── Glow за карточкой ───────────────────────────────────── */
+.login-form__glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(168, 85, 247, 0.12) 0%,
+    rgba(168, 85, 247, 0.04) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.login-form__card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: rgba(18, 18, 30, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow:
+    var(--shadow-neon),
+    0 24px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Title ───────────────────────────────────────────────── */
+.login-form__title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.login-form__title-text {
+  background: linear-gradient(
+    135deg,
+    var(--neon-secondary) 0%,
+    var(--neon-primary) 60%,
+    #e879f9 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px var(--neon-glow));
+}
+
+/* ── Form ────────────────────────────────────────────────── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Field ───────────────────────────────────────────────── */
+.login-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-form__label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+/* ── Input wrapper ───────────────────────────────────────── */
+.login-form__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-form__input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+/* ── Input ───────────────────────────────────────────────── */
+.login-form__input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 44px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.login-form__input::placeholder {
+  color: rgba(136, 136, 170, 0.5);
+}
+
+.login-form__input:focus {
+  border-color: var(--neon-primary);
+  background: rgba(168, 85, 247, 0.05);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1), 0 0 20px rgba(168, 85, 247, 0.1);
+}
+
+.login-form__input:focus + .login-form__input-icon,
+.login-form__input-wrapper:focus-within .login-form__input-icon {
+  color: var(--neon-primary);
+}
+
+/* Пароль — место под глазик */
+.login-form__input--password {
+  padding-right: 48px;
+}
+
+/* ── Eye button ──────────────────────────────────────────── */
+.login-form__eye {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.3s ease;
+}
+
+.login-form__eye:hover {
+  color: var(--neon-primary);
+}
+
+/* ── Row (remember + forgot) ─────────────────────────────── */
+.login-form__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: -4px;
+}
+
+/* ── Checkbox ────────────────────────────────────────────── */
+.login-form__remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Скрываем нативный чекбокс */
+.login-form__checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Кастомный чекбокс */
+.login-form__checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.login-form__checkbox-custom::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: 2px solid transparent;
+  border-left: none;
+  border-top: none;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s ease;
+  margin-bottom: 2px;
+}
+
+.login-form__checkbox:checked ~ .login-form__checkbox-custom {
+  background: var(--neon-primary);
+  border-color: var(--neon-primary);
+  box-shadow: 0 0 12px var(--neon-glow);
+}
+
+.login-form__checkbox:checked ~ .login-form__checkbox-custom::after {
+  border-color: #fff;
+  transform: rotate(45deg) scale(1);
+}
+
+.login-form__remember-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.login-form__remember:hover .login-form__remember-text {
+  color: var(--text-primary);
+}
+
+/* ── Forgot ──────────────────────────────────────────────── */
+.login-form__forgot {
+  font-size: 0.88rem;
+  color: var(--neon-primary);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.login-form__forgot:hover {
+  opacity: 1;
+  text-shadow: 0 0 10px var(--neon-glow);
+}
+
+/* ── Submit ──────────────────────────────────────────────── */
+.login-form__submit {
+  width: 100%;
+  height: 50px;
+  margin-top: 4px;
+  background: linear-gradient(135deg, var(--neon-primary), #9333ea);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px var(--neon-glow), 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.login-form__submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--neon-glow-strong), 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.login-form__submit:active {
+  transform: translateY(0);
+}
+
+/* ── Register ────────────────────────────────────────────── */
+.login-form__register {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: -4px;
+}
+
+.login-form__register-link {
+  color: var(--neon-primary);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.login-form__register-link:hover {
+  text-shadow: 0 0 10px var(--neon-glow);
+  border-bottom-color: var(--neon-primary);
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .login-form__card {
+    padding: 36px 24px;
+  }
+
+  .login-form__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

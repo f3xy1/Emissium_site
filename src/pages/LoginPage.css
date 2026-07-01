@@ -1,0 +1,17 @@
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-page__main {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding-top: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 40px;
+}
