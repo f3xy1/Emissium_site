@@ -1,0 +1,28 @@
+/* Индикатор силы пароля */
+.register-form__strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.register-form__strength-bars {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+}
+
+.register-form__strength-bar {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.register-form__strength-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  min-width: 68px;
+  text-align: right;
+  transition: color 0.3s ease;
+}

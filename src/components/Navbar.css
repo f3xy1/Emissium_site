@@ -27,13 +27,58 @@
   justify-content: space-between;
 }
 
-.navbar__version {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 2px;
+/* ── Logo ────────────────────────────────────────────────── */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
+.navbar__logo-name {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  background: linear-gradient(
+    135deg,
+    var(--neon-secondary) 0%,
+    var(--neon-primary) 60%,
+    #e879f9 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px var(--neon-glow));
+  transition: filter 0.3s ease;
+}
+
+.navbar__logo:hover .navbar__logo-name {
+  filter: drop-shadow(0 0 14px var(--neon-glow-strong));
+}
+
+.navbar__logo-version {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--neon-primary);
+  border: 1px solid var(--border-color);
+  background: var(--neon-glow-subtle);
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.1);
+}
+
+.navbar__logo:hover .navbar__logo-version {
+  border-color: var(--neon-primary);
+  box-shadow: 0 0 12px var(--neon-glow);
+  background: rgba(168, 85, 247, 0.2);
+}
+
+/* ── Nav links ───────────────────────────────────────────── */
 .navbar__right {
   display: flex;
   align-items: center;
@@ -48,6 +93,7 @@
   position: relative;
   padding: 8px 0;
   transition: color 0.3s ease;
+  text-decoration: none;
 }
 
 .navbar__link::after {
@@ -88,7 +134,7 @@
   border-color: var(--neon-primary);
 }
 
-/* Burger */
+/* ── Burger ──────────────────────────────────────────────── */
 .navbar__burger {
   display: none;
   flex-direction: column;
@@ -121,6 +167,146 @@
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+/* ── Profile button ──────────────────────────────────────── */
+.navbar__profile {
+  position: relative;
+}
+
+.navbar__profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--neon-glow-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 6px 12px 6px 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+}
+
+.navbar__profile-btn:hover {
+  border-color: var(--neon-primary);
+  box-shadow: 0 0 15px var(--neon-glow-subtle);
+}
+
+.navbar__profile-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--neon-primary), #9333ea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px var(--neon-glow);
+}
+
+.navbar__profile-login {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar__profile-arrow {
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.navbar__profile-arrow--open {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown ─────────────────────────────────────────────── */
+.navbar__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 200px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow:
+    var(--shadow-neon),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: dropdownIn 0.2s ease;
+  z-index: 100;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar__dropdown-header {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navbar__dropdown-login {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--neon-primary);
+}
+
+.navbar__dropdown-version {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.navbar__dropdown-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 0;
+}
+
+.navbar__dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.navbar__dropdown-item:hover {
+  background: var(--neon-glow-subtle);
+  color: var(--text-primary);
+}
+
+.navbar__dropdown-item--logout:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .navbar__burger {
     display: flex;
@@ -148,5 +334,17 @@
 
   .navbar__link {
     font-size: 1.2rem;
+  }
+
+  .navbar__dropdown {
+    position: static;
+    border-radius: 10px;
+    box-shadow: none;
+    animation: none;
+    margin-top: 8px;
+  }
+
+  .navbar__profile-login {
+    max-width: 160px;
   }
 }

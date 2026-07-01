@@ -1,9 +1,9 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import LoginForm from '../components/LoginForm'
 import Footer from '../components/Footer'
 import MatrixBackground from '../components/MatrixBackground'
 import BackgroundOrbs from '../components/BackgroundOrbs'
+import LoginForm from '../components/LoginForm'
 import './LoginPage.css'
 
 function LoginPage() {

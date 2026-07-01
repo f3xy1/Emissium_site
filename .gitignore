@@ -20,6 +20,11 @@ build/
 .env.production.local
 .env.production
 
+# ===== DATABASE =====
+*.db
+*.db-shm
+*.db-wal
+
 # ===== LOGS =====
 logs/
 *.log
@@ -29,43 +34,24 @@ yarn-error.log*
 pnpm-debug.log*
 
 # ===== OS FILES =====
-# Windows
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
-
-# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
-Icon?
-._*
-.Spotlight-V100
-.Trashes
-
-# Linux
 *~
-.fuse_hidden*
-.Trash-*
 
 # ===== EDITOR =====
-# VSCode
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
-
-# JetBrains (WebStorm, IDEA)
 .idea/
 *.iml
-*.iws
-*.ipr
-
-# Vim
 *.swp
 *.swo
-Session.vim
 
 # ===== CACHE =====
 .cache/

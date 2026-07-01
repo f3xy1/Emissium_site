@@ -1,26 +1,62 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { apiLogin, saveToken } from '../api/auth'
+import { useAuth } from '../context/AuthContext'
 import './LoginForm.css'
 
 function LoginForm() {
+  const navigate = useNavigate()
+  const { setUser } = useAuth()
+
+  const [identifier, setIdentifier] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    if (!identifier.trim() || !password) {
+      setError('Заполните все поля')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const data = await apiLogin({ identifier, password, rememberMe })
+      saveToken(data.token, rememberMe)
+      setUser(data.user)
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="login-form__wrapper">
       <div className="login-form__card">
-
-        {/* Заголовок */}
         <h1 className="login-form__title">
           <span className="login-form__title-text">Авторизация</span>
         </h1>
 
-        <form className="login-form" onSubmit={e => e.preventDefault()}>
+        <form className="login-form" onSubmit={handleSubmit}>
 
-          {/* Логин */}
+          {/* Ошибка */}
+          {error && (
+            <div className="login-form__error">
+              <span>⚠ {error}</span>
+            </div>
+          )}
+
+          {/* Логин / Email */}
           <div className="login-form__field">
-            <label className="login-form__label" htmlFor="login">
-              Логин
-            </label>
+            <label className="login-form__label" htmlFor="login">Логин</label>
             <div className="login-form__input-wrapper">
               <span className="login-form__input-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -34,16 +70,17 @@ function LoginForm() {
                 type="text"
                 className="login-form__input"
                 placeholder="Введите логин или e-mail"
+                value={identifier}
+                onChange={e => setIdentifier(e.target.value)}
                 autoComplete="username"
+                disabled={loading}
               />
             </div>
           </div>
 
           {/* Пароль */}
           <div className="login-form__field">
-            <label className="login-form__label" htmlFor="password">
-              Пароль
-            </label>
+            <label className="login-form__label" htmlFor="password">Пароль</label>
             <div className="login-form__input-wrapper">
               <span className="login-form__input-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -57,7 +94,10 @@ function LoginForm() {
                 type={showPassword ? 'text' : 'password'}
                 className="login-form__input login-form__input--password"
                 placeholder="Введите пароль"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
+                disabled={loading}
               />
               <button
                 type="button"
@@ -66,7 +106,6 @@ function LoginForm() {
                 aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
               >
                 {showPassword ? (
-                  /* Eye-off */
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
@@ -74,7 +113,6 @@ function LoginForm() {
                     <line x1="1" y1="1" x2="23" y2="23"/>
                   </svg>
                 ) : (
-                  /* Eye */
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -98,28 +136,32 @@ function LoginForm() {
               <span className="login-form__remember-text">Запомнить меня</span>
             </label>
 
-            <a href="#" className="login-form__forgot">
-              Забыли пароль?
-            </a>
+            <a href="#" className="login-form__forgot">Забыли пароль?</a>
           </div>
 
           {/* Кнопка */}
-          <button type="submit" className="login-form__submit">
-            Войти
+          <button
+            type="submit"
+            className="login-form__submit"
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="login-form__spinner"></span>
+            ) : (
+              'Войти'
+            )}
           </button>
 
           {/* Регистрация */}
           <p className="login-form__register">
             Нет аккаунта?{' '}
-            <a href="#" className="login-form__register-link">
+            <Link to="/register" className="login-form__register-link">
               Регистрация
-            </a>
+            </Link>
           </p>
 
         </form>
       </div>
-
-      {/* Декоративное свечение за карточкой */}
       <div className="login-form__glow"></div>
     </div>
   )
