@@ -25,6 +25,10 @@ build/
 *.db-shm
 *.db-wal
 
+# ===== LAUNCH SCRIPTS =====
+start.bat
+*.bat
+
 # ===== LOGS =====
 logs/
 *.log

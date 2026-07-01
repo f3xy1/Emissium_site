@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emissium — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --bg2:       #12121a;
+      --bg3:       #1a1a28;
+      --neon:      #a855f7;
+      --neon-glow: rgba(168,85,247,0.4);
+      --border:    rgba(168,85,247,0.25);
+      --text:      #e0e0ff;
+      --text2:     #8888aa;
+      --success:   #22c55e;
+      --danger:    #ef4444;
+      --warning:   #f59e0b;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Login screen ── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 40px rgba(168,85,247,0.15);
+    }
+
+    .login-box h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      color: var(--neon);
+      text-align: center;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px var(--neon-glow);
+    }
+
+    .login-box p {
+      text-align: center;
+      color: var(--text2);
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+
+    /* ── Layout ── */
+    #app { display: none; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar__logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: var(--neon);
+      text-shadow: 0 0 15px var(--neon-glow);
+      padding: 0 24px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar__logo span {
+      font-size: 0.7rem;
+      background: rgba(168,85,247,0.15);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2px 8px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .sidebar__nav {
+      padding: 16px 0;
+      flex: 1;
+    }
+
+    .sidebar__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      cursor: pointer;
+      color: var(--text2);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar__item:hover {
+      color: var(--text);
+      background: rgba(168,85,247,0.05);
+    }
+
+    .sidebar__item--active {
+      color: var(--neon);
+      border-left-color: var(--neon);
+      background: rgba(168,85,247,0.08);
+    }
+
+    .sidebar__footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sidebar__key-display {
+      font-size: 0.75rem;
+      color: var(--text2);
+      word-break: break-all;
+    }
+
+    /* ── Main content ── */
+    .main {
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .page { display: none; }
+    .page--active { display: block; }
+
+    .page-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      color: var(--neon);
+      margin-bottom: 32px;
+      text-shadow: 0 0 15px var(--neon-glow);
+    }
+
+    /* ── Stats ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .stat-card__label {
+      font-size: 0.8rem;
+      color: var(--text2);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-card__value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--neon);
+    }
+
+    /* ── Table ── */
+    .table-wrapper {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-toolbar {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: rgba(168,85,247,0.1);
+    }
+
+    th {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--neon);
+      padding: 14px 16px;
+      text-align: left;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--text2);
+      vertical-align: middle;
+    }
+
+    td:first-child { color: var(--text); font-weight: 500; }
+
+    tr:hover td { background: rgba(168,85,247,0.04); }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge--none {
+      background: rgba(136,136,170,0.1);
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+
+    .badge--active {
+      background: rgba(34,197,94,0.12);
+      color: var(--success);
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+
+    .badge--expired {
+      background: rgba(239,68,68,0.12);
+      color: var(--danger);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn--primary {
+      background: linear-gradient(135deg, var(--neon), #9333ea);
+      color: #fff;
+      box-shadow: 0 0 15px var(--neon-glow);
+    }
+
+    .btn--primary:hover { box-shadow: 0 0 25px var(--neon-glow); transform: translateY(-1px); }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--neon);
+      border: 1px solid var(--border);
+    }
+
+    .btn--ghost:hover { background: rgba(168,85,247,0.08); }
+
+    .btn--danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    .btn--danger:hover { background: rgba(239,68,68,0.08); }
+
+    .btn--sm { padding: 5px 12px; font-size: 0.78rem; }
+
+    /* ── Form ── */
+    .form-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+    }
+
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    label {
+      font-size: 0.82rem;
+      color: var(--text2);
+      font-weight: 500;
+    }
+
+    input, select {
+      height: 44px;
+      padding: 0 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 0 3px rgba(168,85,247,0.1);
+    }
+
+    select option { background: var(--bg2); }
+
+    /* ── Alert ── */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+    }
+
+    .alert--error   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: var(--danger); }
+    .alert--success { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.3);  color: var(--success); }
+
+    /* ── Search ── */
+    .search-input {
+      height: 38px;
+      padding: 0 12px;
+      flex: 1;
+      max-width: 300px;
+    }
+
+    /* ── User detail modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 24px;
+    }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 0 40px rgba(168,85,247,0.2);
+    }
+
+    .modal h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon);
+      font-size: 1rem;
+      margin-bottom: 24px;
+    }
+
+    .modal-field {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+
+    .modal-field__key { color: var(--text2); }
+    .modal-field__val { color: var(--text); font-weight: 500; }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Emissium <span>ADMIN</span></h1>
+    <p>Введите секретный ключ для доступа</p>
+    <div class="form-group" style="margin-bottom:16px">
+      <label>Секретный ключ</label>
+      <input type="password" id="key-input" placeholder="admin_secret_..." />
+    </div>
+    <div id="login-error" class="alert alert--error" style="display:none"></div>
+    <button class="btn btn--primary" style="width:100%" onclick="doLogin()">Войти</button>
+  </div>
+</div>
+
+<!-- ── App ── -->
+<div id="app">
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        Emissium <span>ADMIN</span>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="sidebar__item sidebar__item--active" onclick="showPage('dashboard')" id="nav-dashboard">
+          📊 Дашборд
+        </div>
+        <div class="sidebar__item" onclick="showPage('users')" id="nav-users">
+          👥 Пользователи
+        </div>
+        <div class="sidebar__item" onclick="showPage('subscription')" id="nav-subscription">
+          🎫 Выдать подписку
+        </div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__key-display">
+          Ключ: <span id="key-display"></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Dashboard -->
+      <div class="page page--active" id="page-dashboard">
+        <h2 class="page-title">Дашборд</h2>
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card__label">Всего пользователей</div>
+            <div class="stat-card__value" id="stat-total">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">С подпиской</div>
+            <div class="stat-card__value" id="stat-subs">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Без подписки</div>
+            <div class="stat-card__value" id="stat-free">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users -->
+      <div class="page" id="page-users">
+        <h2 class="page-title">Пользователи</h2>
+        <div class="table-wrapper">
+          <div class="table-toolbar">
+            <input class="search-input" type="text" placeholder="Поиск по логину / email..."
+              oninput="filterUsers(this.value)" />
+            <button class="btn btn--ghost btn--sm" onclick="loadUsers()">↻ Обновить</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>UID</th>
+                  <th>Логин</th>
+                  <th>Email</th>
+                  <th>Подписка</th>
+                  <th>Окончание</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="users-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subscription -->
+      <div class="page" id="page-subscription">
+        <h2 class="page-title">Выдать подписку</h2>
+        <div id="sub-alert"></div>
+        <div class="form-card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>UID или логин пользователя</label>
+              <input type="text" id="sub-uid" placeholder="Например: 1 или username" />
+            </div>
+            <div class="form-group">
+              <label>Тип подписки</label>
+              <select id="sub-version">
+                <option value="basic">Базовая</option>
+                <option value="full">Полная</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Количество дней</label>
+              <input type="number" id="sub-days" value="30" min="1" max="3650" />
+            </div>
+          </div>
+          <button class="btn btn--primary" onclick="giveSubscription()">
+            🎫 Выдать подписку
+          </button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- User modal -->
+<div class="modal-overlay" id="user-modal" style="display:none" onclick="closeModal(event)">
+  <div class="modal">
+    <h2>👤 Информация о пользователе</h2>
+    <div id="modal-content"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:3001/admin'
+  let adminKey = ''
+  let allUsers = []
+
+  // ── Login ────────────────────────────────────────────────────
+  async function doLogin() {
+    const key = document.getElementById('key-input').value.trim()
+    if (!key) return
+
+    try {
+      const res = await fetch(`${API}/users`, {
+        headers: { 'x-admin-key': key }
+      })
+      if (!res.ok) throw new Error('Неверный ключ')
+
+      adminKey = key
+      document.getElementById('key-display').textContent =
+        key.slice(0, 6) + '••••••'
+      document.getElementById('login-screen').style.display = 'none'
+      document.getElementById('app').style.display = 'block'
+
+      loadDashboard()
+      loadUsers()
+    } catch (e) {
+      const el = document.getElementById('login-error')
+      el.textContent = '⚠ ' + e.message
+      el.style.display = 'block'
+    }
+  }
+
+  document.getElementById('key-input')
+    .addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() })
+
+  // ── Navigation ───────────────────────────────────────────────
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('page--active'))
+    document.querySelectorAll('.sidebar__item').forEach(i => i.classList.remove('sidebar__item--active'))
+    document.getElementById('page-' + name).classList.add('page--active')
+    document.getElementById('nav-' + name).classList.add('sidebar__item--active')
+  }
+
+  // ── Dashboard ────────────────────────────────────────────────
+  async function loadDashboard() {
+    const data = await apiFetch('/users')
+    const users = data.users || []
+    const now = new Date()
+    const withSub = users.filter(u =>
+      u.version !== 'none' && u.sub_expires && new Date(u.sub_expires) > now
+    )
+    document.getElementById('stat-total').textContent = users.length
+    document.getElementById('stat-subs').textContent  = withSub.length
+    document.getElementById('stat-free').textContent  = users.length - withSub.length
+  }
+
+  // ── Users ────────────────────────────────────────────────────
+  async function loadUsers() {
+    const data = await apiFetch('/users')
+    allUsers = data.users || []
+    renderUsers(allUsers)
+  }
+
+  function filterUsers(query) {
+    const q = query.toLowerCase()
+    const filtered = allUsers.filter(u =>
+      u.login.toLowerCase().includes(q) ||
+      u.email.toLowerCase().includes(q) ||
+      String(u.uid).includes(q)
+    )
+    renderUsers(filtered)
+  }
+
+  function renderUsers(users) {
+    const tbody = document.getElementById('users-tbody')
+    tbody.innerHTML = ''
+
+    if (!users.length) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text2)">Пользователи не найдены</td></tr>`
+      return
+    }
+
+    users.forEach(u => {
+      const now = new Date()
+      const expired = u.sub_expires ? new Date(u.sub_expires) < now : true
+      const hasActive = u.version !== 'none' && !expired
+
+      const badge = u.version === 'none'
+        ? `<span class="badge badge--none">Нет</span>`
+        : hasActive
+          ? `<span class="badge badge--active">${u.version}</span>`
+          : `<span class="badge badge--expired">${u.version} (истекла)</span>`
+
+      const expires = u.sub_expires
+        ? new Date(u.sub_expires).toLocaleString('ru-RU', {
+            day:'2-digit', month:'2-digit', year:'numeric',
+            hour:'2-digit', minute:'2-digit'
+          })
+        : '—'
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${u.uid}</td>
+          <td>${u.login}</td>
+          <td style="color:var(--text2)">${u.email}</td>
+          <td>${badge}</td>
+          <td style="color:var(--text2);font-size:0.8rem">${expires}</td>
+          <td>
+            <button class="btn btn--ghost btn--sm" onclick="openUserModal(${u.uid})">
+              Подробнее
+            </button>
+          </td>
+        </tr>
+      `
+    })
+  }
+
+  // ── User modal ───────────────────────────────────────────────
+  async function openUserModal(uid) {
+    const data = await apiFetch(`/users/${uid}`)
+    const u = data.user
+    const now = new Date()
+    const expired = u.sub_expires ? new Date(u.sub_expires) < now : true
+    const hasActive = u.version !== 'none' && !expired
+
+    document.getElementById('modal-content').innerHTML = `
+      <div class="modal-field"><span class="modal-field__key">UID</span><span class="modal-field__val">${u.uid}</span></div>
+      <div class="modal-field"><span class="modal-field__key">Логин</span><span class="modal-field__val">${u.login}</span></div>
+      <div class="modal-field"><span class="modal-field__key">Email</span><span class="modal-field__val">${u.email}</span></div>
+      <div class="modal-field"><span class="modal-field__key">Подписка</span><span class="modal-field__val">${u.version}</span></div>
+      <div class="modal-field"><span class="modal-field__key">Начало</span><span class="modal-field__val">${fmtDate(u.sub_started)}</span></div>
+      <div class="modal-field"><span class="modal-field__key">Окончание</span><span class="modal-field__val">${fmtDate(u.sub_expires)}</span></div>
+      <div class="modal-field"><span class="modal-field__key">Регистрация</span><span class="modal-field__val">${fmtDate(u.created_at)}</span></div>
+    `
+
+    document.getElementById('modal-actions').innerHTML = `
+      <button class="btn btn--ghost" onclick="prefillSub(${u.uid}); closeModal()">
+        🎫 Выдать подписку
+      </button>
+      ${hasActive
+        ? `<button class="btn btn--danger" onclick="resetSub(${u.uid})">✕ Сбросить подписку</button>`
+        : ''
+      }
+      <button class="btn btn--ghost" onclick="closeModal()">Закрыть</button>
+    `
+
+    document.getElementById('user-modal').style.display = 'flex'
+  }
+
+  function closeModal(e) {
+    if (!e || e.target === e.currentTarget) {
+      document.getElementById('user-modal').style.display = 'none'
+    }
+  }
+
+  function prefillSub(uid) {
+    document.getElementById('sub-uid').value = uid
+    showPage('subscription')
+  }
+
+  async function resetSub(uid) {
+    if (!confirm('Сбросить подписку?')) return
+    await apiFetch(`/users/${uid}`, 'DELETE',
+      null, true /* используем delete на /subscription/uid */)
+    closeModal()
+    loadUsers()
+    loadDashboard()
+  }
+
+  // ── Give subscription ────────────────────────────────────────
+  async function giveSubscription() {
+    const alertEl = document.getElementById('sub-alert')
+    alertEl.innerHTML = ''
+
+    const raw = document.getElementById('sub-uid').value.trim()
+    const version = document.getElementById('sub-version').value
+    const days = document.getElementById('sub-days').value
+
+    if (!raw || !days) {
+      alertEl.innerHTML = `<div class="alert alert--error">Заполните все поля</div>`
+      return
+    }
+
+    // Определяем uid — число или ищем по логину
+    let uid = null
+    if (/^\d+$/.test(raw)) {
+      uid = Number(raw)
+    } else {
+      const found = allUsers.find(u => u.login.toLowerCase() === raw.toLowerCase())
+      if (!found) {
+        alertEl.innerHTML = `<div class="alert alert--error">Пользователь не найден</div>`
+        return
+      }
+      uid = found.uid
+    }
+
+    try {
+      const data = await apiFetch('/subscription', 'POST', { uid, version, days: Number(days) })
+      alertEl.innerHTML = `
+        <div class="alert alert--success">
+          ✓ Подписка выдана: ${data.user.login} → ${data.user.version}<br>
+          Окончание: ${fmtDate(data.user.sub_expires)}
+        </div>`
+      loadUsers()
+      loadDashboard()
+    } catch (e) {
+      alertEl.innerHTML = `<div class="alert alert--error">⚠ ${e.message}</div>`
+    }
+  }
+
+  // ── Helpers ──────────────────────────────────────────────────
+  async function apiFetch(path, method = 'GET', body = null, isDelete = false) {
+    const url = isDelete
+      ? `${API}/subscription/${path.split('/').pop()}`
+      : `${API}${path}`
+
+    const opts = {
+      method: isDelete ? 'DELETE' : method,
+      headers: { 'x-admin-key': adminKey }
+    }
+    if (body) {
+      opts.headers['Content-Type'] = 'application/json'
+      opts.body = JSON.stringify(body)
+    }
+    const res = await fetch(url, opts)
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error || 'Ошибка запроса')
+    return data
+  }
+
+  function fmtDate(str) {
+    if (!str) return '—'
+    return new Date(str).toLocaleString('ru-RU', {
+      day:'2-digit', month:'2-digit', year:'numeric',
+      hour:'2-digit', minute:'2-digit'
+    })
+  }
+</script>
+</body>
+</html>

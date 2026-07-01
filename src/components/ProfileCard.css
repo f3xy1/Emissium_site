@@ -215,8 +215,8 @@
 
 /* ── Кнопки действий ──────────────────────────────────────── */
 .profile-card__actions {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 12px;
 }
 
@@ -225,11 +225,12 @@
   height: 48px;
   border-radius: 12px;
   font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
+  white-space: nowrap;
 }
 
 .profile-card__action-btn--primary {
@@ -269,6 +270,10 @@
 
 /* ── Mobile ───────────────────────────────────────────────── */
 @media (max-width: 500px) {
+  .profile-card__actions {
+    grid-template-columns: 1fr;
+  }
+
   .profile-card {
     padding: 32px 20px;
   }
