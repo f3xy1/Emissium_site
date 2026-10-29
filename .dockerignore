@@ -1,0 +1,35 @@
+# Dependencies are installed inside Linux build stages.
+**/node_modules
+
+# Generated output, caches and logs.
+dist
+dist-ssr
+build
+coverage
+.vite
+.cache
+**/*.log
+
+# Local database files must not become part of an image.
+**/*.db
+**/*.db-shm
+**/*.db-wal
+data
+
+# Local configuration, source control and editor files.
+.env
+.env.*
+.git
+.vscode
+.idea
+**/*.bat
+**/*.tmp
+**/.DS_Store
+**/Thumbs.db
+
+# Documentation and container configuration are not application sources.
+*.md
+requirements.txt
+Dockerfile
+.dockerignore
+docker-compose.yml
