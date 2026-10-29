@@ -1,26 +1,20 @@
-# syntax=docker/dockerfile:1
-
-# Build tools are needed if native bcrypt / better-sqlite3 binaries must be compiled.
 FROM node:24-bookworm-slim AS build-base
 WORKDIR /app
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3 make g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Build the React application with development dependencies.
 FROM build-base AS client-build
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 COPY . .
 RUN npm run build
 
-# Install only the server's runtime dependencies.
 FROM build-base AS server-deps
 WORKDIR /app/server
 COPY server/package.json server/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 
-# The final image contains the server and compiled client, without build tools.
 FROM node:24-bookworm-slim AS runtime
 WORKDIR /app/server
 ENV NODE_ENV=production \
